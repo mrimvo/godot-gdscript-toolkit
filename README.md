@@ -23,9 +23,9 @@ Regardless of the target version, installation is done by `pip3` command and for
 
 Latest version (potentially unstable) can be installed directly from git:
 ```
-pip3 install git+https://github.com/sulai/godot-gdscript-toolkit.git
+pip3 install git+https://github.com/mrimvo/godot-gdscript-toolkit.git
 # or
-pipx install git+https://github.com/sulai/godot-gdscript-toolkit.git
+pipx install git+https://github.com/mrimvo/godot-gdscript-toolkit.git
 ```
 
 ## Linting with gdlint [(more)](https://github.com/Scony/godot-gdscript-toolkit/wiki/3.-Linter)
