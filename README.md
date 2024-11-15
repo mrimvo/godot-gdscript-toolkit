@@ -10,34 +10,22 @@ This project provides a set of tools for daily work with `GDScript`. At the mome
 - A formatter that formats the code according to some predefined rules.
 - A code metrics calculator which calculates cyclomatic complexity of functions and classes.
 
+## This fork
+
+This fork adds a new linter check that checks for untyped expressions.
+
 ## Installation
 
 To install this project you need `python3` and `pip`.
 Regardless of the target version, installation is done by `pip3` command and for stable releases, it downloads the package from PyPI.
 
-### Godot 4
-
-```
-pip3 install "gdtoolkit==4.*"
-# or
-pipx install "gdtoolkit==4.*"
-```
-
-### Godot 3
-
-```
-pip3 install "gdtoolkit==3.*"
-# or
-pipx install "gdtoolkit==3.*"
-```
-
 ### `master` (latest)
 
 Latest version (potentially unstable) can be installed directly from git:
 ```
-pip3 install git+https://github.com/Scony/godot-gdscript-toolkit.git
+pip3 install git+https://github.com/sulai/godot-gdscript-toolkit.git
 # or
-pipx install git+https://github.com/Scony/godot-gdscript-toolkit.git
+pipx install git+https://github.com/sulai/godot-gdscript-toolkit.git
 ```
 
 ## Linting with gdlint [(more)](https://github.com/Scony/godot-gdscript-toolkit/wiki/3.-Linter)
