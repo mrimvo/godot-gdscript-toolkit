@@ -12,7 +12,9 @@ This project provides a set of tools for daily work with `GDScript`. At the mome
 
 ## This fork
 
-This fork adds a new linter check that checks for untyped expressions.
+This fork adds:
+- a new linter check that checks for untyped expressions.
+- ignore name check for GDScript variables, which allows for var CamelCase: GDScript (WIP)
 
 ## Installation
 

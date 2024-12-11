@@ -41,6 +41,8 @@ def _class_definitions_order_check_for_class(
     a_class: Class, order: List[str]
 ) -> List[Problem]:
     problems = []
+    if not order:
+        return problems
     current_section = order[0]
     for statement in a_class.statements:
         if _is_statement_irrelevant(statement):

@@ -3,7 +3,7 @@ from functools import partial
 from typing import Dict, List
 from types import MappingProxyType
 
-from lark import Tree
+from lark import Tree, Token
 
 from ..common.utils import find_name_token_among_children, get_line, get_column
 
@@ -106,7 +106,11 @@ def lint(parse_tree: Tree, config: MappingProxyType) -> List[Problem]:
                 config["function-argument-name"],
                 rule_name_tokens["func_arg_regular"]
                 + rule_name_tokens["func_arg_inf"]
-                + rule_name_tokens["func_arg_typed"],
+                + _gather_rule_name_tokens(
+                    parse_tree,
+                    ["func_arg_typed"],
+                    lambda x: not _has_type_hint_gdscript(x),
+                )["func_arg_typed"],
                 "function-argument-name",
                 'Function argument name "{}" is not valid',
             ),
@@ -119,7 +123,7 @@ def lint(parse_tree: Tree, config: MappingProxyType) -> List[Problem]:
                 _gather_rule_name_tokens(
                     parse_tree,
                     ["func_var_stmt"],
-                    lambda x: not _has_load_or_preload_call_expr(x),
+                    lambda x: not _has_load_or_preload_call_expr(x) and not _has_type_hint_gdscript(x),
                 )["func_var_stmt"],
                 "function-variable-name",
                 'Function-scope variable name "{}" is not valid',
@@ -147,7 +151,7 @@ def lint(parse_tree: Tree, config: MappingProxyType) -> List[Problem]:
                 _gather_rule_name_tokens(
                     parse_tree,
                     ["const_stmt"],
-                    lambda x: not _has_load_or_preload_call_expr(x),
+                    lambda x: not _has_load_or_preload_call_expr(x) and not _has_type_hint_gdscript(x),
                 )["const_stmt"],
                 "constant-name",
                 'Constant name "{}" is not valid',
@@ -175,7 +179,7 @@ def lint(parse_tree: Tree, config: MappingProxyType) -> List[Problem]:
                 _gather_rule_name_tokens(
                     parse_tree,
                     ["class_var_stmt"],
-                    lambda x: not _has_load_or_preload_call_expr(x),
+                    lambda x: not _has_load_or_preload_call_expr(x) and not _has_type_hint_gdscript(x),
                 )["class_var_stmt"],
                 "class-variable-name",
                 'Class-scope variable name "{}" is not valid',
@@ -239,6 +243,14 @@ def _gather_rule_name_tokens(
             if predicate_outcome:
                 name_tokens_per_rule[rule_name].append(name_token)
     return name_tokens_per_rule
+
+
+# TODO: make this check configurable in gdlintrc
+def _has_type_hint_gdscript(tree: Tree) -> bool:
+    if len(tree.children) <= 1: return False
+    child = tree.children[1]
+    if not isinstance(child, Token): return False
+    return child.type == "TYPE_HINT" and child.value in ["Script", "GDScript"]
 
 
 def _has_load_or_preload_call_expr(tree: Tree) -> bool:
